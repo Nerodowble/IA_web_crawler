@@ -77,6 +77,18 @@ O seletor do frontend permite trocar o provedor sem reiniciar o servidor. O Chat
 
 A sessão do navegador é armazenada localmente em `.browser-profile/`, que está no `.gitignore`. Não compartilhe essa pasta, pois ela contém os dados da sessão autenticada.
 
+## Plugin de IA do MotoRede
+
+`npm run plugin` liga este computador como o **plugin de IA** do MotoRede, no mesmo modelo do plugin de música: sem túnel e sem porta aberta. É este computador que pergunta ao MotoRede, a cada 5 s, se há tarefa; cada tarefa traz um prompt pronto (hoje, a ficha técnica de um modelo de moto), o Gemini responde numa conversa nova e o texto volta ao MotoRede, que valida e guarda por modelo.
+
+1. Na Vercel, em `MOTOREDE_PLUGINS`, registre o plugin com `"tipo": "ia"`:
+   `{ "id": "ia", "nome": "IA de casa", "chave": "<segredo com 24+ caracteres>", "tipo": "ia" }` e faça o redeploy.
+2. No `.env` deste projeto, preencha `MOTOREDE_URL`, `MOTOREDE_PLUGIN_ID` e `MOTOREDE_PLUGIN_CHAVE` (ver `.env.example`).
+3. Rode `npm run plugin` para testar. Com ele ligado, a tela "Minha moto" do app mostra a ficha; desligado, mostra "fora do ar".
+4. Para ligar sozinho com o Windows, escondido e religando se cair: `scripts\instalar-inicio-automatico.cmd`. O log fica em `.motorede-plugin.log`. Para desfazer: `scripts\remover-inicio-automatico.cmd`.
+
+Um computador por vez: dois ligados com a mesma chave disputam as tarefas. O plugin usa o Gemini com as mesmas variáveis `HEADLESS` e `ANONYMOUS` do servidor.
+
 ## Próximos passos
 
 Os seletores da interface podem mudar quando o Gemini for atualizado. Se isso acontecer, ajuste os seletores em `src/gemini-browser.js`. Automatize somente uma conta e uma página cujo uso permita esse tipo de automação, respeitando os limites e os termos aplicáveis.

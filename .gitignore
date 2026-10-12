@@ -6,3 +6,4 @@ npm-debug.log*
 .remote-access-token
 .cloudflared*.log
 .server*.log
+.motorede-plugin.log

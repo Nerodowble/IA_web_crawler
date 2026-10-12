@@ -50,14 +50,16 @@ export class GeminiBrowser {
     console.log(`[Gemini] URL: ${this.page.url()}`);
   }
 
-  async ask(message) {
-    const task = this.queue.then(() => this.askNow(message));
+  async ask(message, { novaConversa = false } = {}) {
+    const task = this.queue.then(() => this.askNow(message, novaConversa));
     this.queue = task.catch(() => {});
     return task;
   }
 
-  async askNow(message) {
+  async askNow(message, novaConversa = false) {
     const page = await this.start();
+    // Conversa nova: a resposta não herda o contexto da pergunta anterior.
+    if (novaConversa) await page.goto('https://gemini.google.com/app', { waitUntil: 'domcontentloaded' });
     await this.ensureLoggedIn(page);
     const before = await this.responseTexts(page);
     const input = page.locator('textarea, [contenteditable="true"]').first();
