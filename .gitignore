@@ -1,0 +1,8 @@
+node_modules/
+.env
+npm-debug.log*
+.browser-profile/
+.chatgpt-profile/
+.remote-access-token
+.cloudflared*.log
+.server*.log
